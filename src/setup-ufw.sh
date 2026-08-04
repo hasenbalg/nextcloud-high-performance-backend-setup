@@ -50,7 +50,13 @@ function ufw_step2() {
 
 	# Nginx
 	if [ "$SHOULD_INSTALL_NGINX" = true ]; then
-		${_cmdprefix}ufw allow "WWW Full" comment "Nextcloud HPB Nginx" | tee -a $LOGFILE_PATH
+		if [ "$HTTP_PORT" == "80" ] && [ "$HTTPS_PORT" == "443"]; then
+			${_cmdprefix}ufw allow "WWW Full" comment "Nextcloud HPB Nginx" | tee -a $LOGFILE_PATH
+		else
+			${_cmdprefix}ufw allow $HTTP_PORT comment "Nextcloud HPB Nginx port $HTTP_PORT" | tee -a $LOGFILE_PATH
+			${_cmdprefix}ufw allow $HTTPS_PORT comment "Nextcloud HPB Nginx port $HTTPS_PORT" | tee -a $LOGFILE_PATH
+		fi
+		
 	fi
 
 	# Coturn
