@@ -57,6 +57,12 @@ function nginx_step2() {
 	log "Replacing '<SERVER_FQDN>' with '$SERVER_FQDN'…"
 	sed -i "s|<SERVER_FQDN>|$SERVER_FQDN|g" "$TMP_DIR_PATH"/nginx/*
 
+	log "Replacing '<HTTP_PORT>' with '$HTTP_PORT'…"
+	sed -i "s|<HTTP_PORT>|$HTTP_PORT|g" "$TMP_DIR_PATH"/nginx/*
+
+	log "Replacing '<HTTPS_PORT>' with '$HTTPS_PORT'…"
+	sed -i "s|<HTTPS_PORT>|$HTTPS_PORT|g" "$TMP_DIR_PATH"/nginx/*
+
 	log "Replacing '<SSL_CERT_PATH_RSA>' with '$SSL_CERT_PATH_RSA'…"
 	sed -i "s|<SSL_CERT_PATH_RSA>|$SSL_CERT_PATH_RSA|g" "$TMP_DIR_PATH"/nginx/*
 

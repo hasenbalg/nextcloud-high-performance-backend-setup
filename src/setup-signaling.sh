@@ -641,7 +641,7 @@ function signaling_write_secrets_to_file() {
 	echo -e " - $SIGNALING_TURN_STATIC_AUTH_SECRET" >>$1
 	echo -e " - 'udp & tcp'" >>$1
 	echo -e "High-performance backend:" >>$1
-	echo -e " - https://$SERVER_FQDN/standalone-signaling" >>$1
+	echo -e " - https://$SERVER_FQDN:$HTTPS_PORT/standalone-signaling" >>$1
 
 	for NC_SERVER in "${NEXTCLOUD_SERVER_FQDNS[@]}"; do
 		NC_SERVER_UNDERSCORE=$(echo "$NC_SERVER" | sed "s/\./_/g")
@@ -665,7 +665,7 @@ function signaling_print_info() {
 	echo -e " - secret: ${cyan}$SIGNALING_TURN_STATIC_AUTH_SECRET"
 	log " - '${cyan}udp & tcp${blue}'"
 	log "High-performance backend:"
-	log " - ${cyan}https://$SERVER_FQDN/standalone-signaling"
+	log " - ${cyan}https://$SERVER_FQDN:$HTTPS_PORT/standalone-signaling"
 
 	for NC_SERVER in "${NEXTCLOUD_SERVER_FQDNS[@]}"; do
 		NC_SERVER_UNDERSCORE=$(echo "$NC_SERVER" | sed "s/\./_/g")

@@ -208,7 +208,7 @@ function collabora_write_secrets_to_file() {
 }
 
 function collabora_print_info() {
-	collabora_address="https://$SERVER_FQDN/collabora"
+	collabora_address="https://$SERVER_FQDN:$HTTPS_PORT/collabora"
 
 	log "The Collabora Online service got installed. To set it up," \
 		"\nlog into all of your Nextcloud instances with an adminstrator" \

@@ -107,9 +107,48 @@ function show_dialogs() {
 				12 65 "nc-workhorse.example.org" 3>&1 1>&2 2>&3
 		)
 	fi
+
 	# Filter out HTTPS:// or HTTP://
 	SERVER_FQDN=$(echo $SERVER_FQDN | sed -r "s#https?\:\/\/##gi")
 	log "Using '$SERVER_FQDN' for SERVER_FQDN."
+
+	if [ "$HTTP_PORT" = "" ]; then	
+		if [ "$UNATTENDED_INSTALL" = true ]; then
+			log_err "Can't continue since this is a non-interactive installation and I'm" \
+			        "missing HTTP_PORT!"
+			exit 1
+		fi
+
+		HTTP_PORT=$(
+			whiptail --title "High-Performance Backend Server HTTP Port" \
+				--inputbox "Please enter your high performance backend $(
+				)server's http port name here. (Usually 80).\n\n$(
+				)Also please note that this port should already forwarded $(
+				) in your firewall or else SSL certificate creation will fail!" \
+				12 65 "80" 3>&1 1>&2 2>&3
+		)
+	fi
+	log "Using '$HTTP_PORT' for HTTP protocol."
+
+
+	if [ "$HTTPS_PORT" = "" ]; then	
+		if [ "$UNATTENDED_INSTALL" = true ]; then
+			log_err "Can't continue since this is a non-interactive installation and I'm" \
+			        "missing HTTPS_PORT!"
+			exit 1
+		fi
+
+		HTTPS_PORT=$(
+			whiptail --title "High-Performance Backend Server HTTPS Port" \
+				--inputbox "Please enter your high performance backend $(
+				)server's https port name here. (Usually 443).\n\n$(
+				)Also please note that this port should already forwarded $(
+				) in your firewall or else SSL certificate creation will fail!" \
+				12 65 "443" 3>&1 1>&2 2>&3
+		)
+	fi
+	log "Using '$HTTPS_PORT' for HTTPS protocol."
+
 
 	# - SSL Cert stuff below -
 	if [ "$DHPARAM_PATH" = "" ]; then
