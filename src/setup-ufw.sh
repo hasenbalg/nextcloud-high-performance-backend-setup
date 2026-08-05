@@ -61,7 +61,7 @@ function ufw_step2() {
 
 	# Coturn
 	if [ "$SHOULD_INSTALL_SIGNALING" = true ]; then
-		${_cmdprefix}ufw allow 5349 comment "Nextcloud HPB Coturn" | tee -a $LOGFILE_PATH
+		${_cmdprefix}ufw allow $SIGNALING_COTURN_PORT comment "Nextcloud HPB Coturn" | tee -a $LOGFILE_PATH
 	fi
 
 	_ufwargs=""

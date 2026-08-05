@@ -149,6 +149,24 @@ function show_dialogs() {
 	fi
 	log "Using '$HTTPS_PORT' for HTTPS protocol."
 
+	if [ "$SHOULD_INSTALL_SIGNALING" = true ] && [ "$SIGNALING_COTURN_PORT" = "" ]; then	
+		if [ "$UNATTENDED_INSTALL" = true ]; then
+			log_err "Can't continue since this is a non-interactive installation and I'm" \
+			        "missing SIGNALING_COTURN_PORT!"
+			exit 1
+		fi
+
+		SIGNALING_COTURN_PORT=$(
+			whiptail --title "High-Performance Backend Server Coturn Port" \
+				--inputbox "Please enter your high performance backend $(
+				)server's Coturn port name here. (Usually 5349).\n\n$(
+				)Also please note that this port should already forwarded $(
+				) in your firewall or else the connecting will fail!" \
+				12 65 "5349" 3>&1 1>&2 2>&3
+		)
+	fi
+	log "Using '$SIGNALING_COTURN_PORT' for Coturn protocol."
+
 
 	# - SSL Cert stuff below -
 	if [ "$DHPARAM_PATH" = "" ]; then

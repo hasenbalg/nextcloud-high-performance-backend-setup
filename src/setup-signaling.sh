@@ -555,6 +555,9 @@ function signaling_step4() {
 	log "Replacing '<SIGNALING_COTURN_URL>' with '$SIGNALING_COTURN_URL'…"
 	sed -i "s|<SIGNALING_COTURN_URL>|$SIGNALING_COTURN_URL|g" "$TMP_DIR_PATH"/signaling/*
 
+	log "Replacing '<SIGNALING_COTURN_PORT>' with '$SIGNALING_COTURN_PORT'…"
+	sed -i "s|<SIGNALING_COTURN_PORT>|$SIGNALING_COTURN_PORT|g" "$TMP_DIR_PATH"/signaling/*
+
 	log "Replacing '<SSL_CERT_PATH_RSA>' with '$SSL_CERT_PATH_RSA'…"
 	sed -i "s|<SSL_CERT_PATH_RSA>|$SSL_CERT_PATH_RSA|g" "$TMP_DIR_PATH"/signaling/*
 
@@ -634,10 +637,10 @@ function signaling_write_secrets_to_file() {
 	echo -e "" >>$1
 	echo -e "Allowed Nextcloud Servers:" >>$1
 	echo -e "$(printf '\t- https://%s\n' "${NEXTCLOUD_SERVER_FQDNS[@]}")" >>$1
-	echo -e "STUN server = $SERVER_FQDN:5349" >>$1
+	echo -e "STUN server = $SERVER_FQDN:$SIGNALING_COTURN_PORT" >>$1
 	echo -e "TURN server:" >>$1
 	echo -e " - 'turn and turns'" >>$1
-	echo -e " - $SERVER_FQDN:5349" >>$1
+	echo -e " - $SERVER_FQDN:$SIGNALING_COTURN_PORT" >>$1
 	echo -e " - $SIGNALING_TURN_STATIC_AUTH_SECRET" >>$1
 	echo -e " - 'udp & tcp'" >>$1
 	echo -e "High-performance backend:" >>$1
@@ -658,10 +661,10 @@ function signaling_print_info() {
 		"$(for NC_SERVER in "${NEXTCLOUD_SERVER_FQDNS[@]}"; do printf '\t- %shttps://%s%s\n' "${cyan}" "$NC_SERVER" "${blue}"; done)\n"
 
 	# Don't actually *log* passwords!
-	log "STUN server = ${cyan}$SERVER_FQDN:5349"
+	log "STUN server = ${cyan}$SERVER_FQDN:$SIGNALING_COTURN_PORT"
 	log "TURN server:"
 	log " - '${cyan}turn and turns${blue}'"
-	log " - ${cyan}turnserver+port${blue}: ${cyan}$SERVER_FQDN:5349"
+	log " - ${cyan}turnserver+port${blue}: ${cyan}$SERVER_FQDN:$SIGNALING_COTURN_PORT"
 	echo -e " - secret: ${cyan}$SIGNALING_TURN_STATIC_AUTH_SECRET"
 	log " - '${cyan}udp & tcp${blue}'"
 	log "High-performance backend:"
